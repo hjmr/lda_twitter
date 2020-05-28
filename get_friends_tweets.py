@@ -1,17 +1,9 @@
 import json
 import argparse
-import time
 
-from TwitterAPI import TwitterAPI
-import config
-import utils
 from get_friends import get_friends
 from get_timeline import get_timeline
 from get_userinfo import get_userinfo
-
-
-SHOW_USER = 'users/show'
-api = TwitterAPI(config.API_KEY, config.API_SECRET_KEY, config.ACCESS_TOKEN, config.ACCESS_TOKEN_SECRET)
 
 
 def parse_arg():
