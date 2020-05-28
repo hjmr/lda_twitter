@@ -7,7 +7,7 @@ import config
 import utils
 
 
-API_BASE = 'followers/ids'
+API = 'followers/ids'
 api = TwitterAPI(config.API_KEY, config.API_SECRET_KEY, config.ACCESS_TOKEN, config.ACCESS_TOKEN_SECRET)
 
 
@@ -39,7 +39,7 @@ def get_friends(user_id=None, screen_name=None, count=1000):
 
         if 0 <= cursor:
             params['cursor'] = cursor
-        res = api.request(API_BASE, params=params)
+        res = api.request(API, params=params)
         rj = res.json()
         if res.status_code == 429:  # 時間内の取得数リミットに引っかかった場合
             secs_to_wait = int(res.headers['X-Rate-Limit-Reset'])

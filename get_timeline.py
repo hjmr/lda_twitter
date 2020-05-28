@@ -7,7 +7,7 @@ import config
 import utils
 
 
-API_BASE = 'statuses/user_timeline'
+API = 'statuses/user_timeline'
 api = TwitterAPI(config.API_KEY, config.API_SECRET_KEY, config.ACCESS_TOKEN, config.ACCESS_TOKEN_SECRET)
 
 
@@ -39,7 +39,7 @@ def get_timeline(user_id=None, screen_name=None, count=200):
 
         if 0 <= min_tweet_id:
             params['max_id'] = min_tweet_id - 1  # min_twidよりも古いIDのツイートのみを取得する
-        res = api.request(API_BASE, params=params)
+        res = api.request(API, params=params)
         if res.status_code == 429:  # 時間内の取得数リミットに引っかかった場合
             secs_to_wait = int(res.headers['X-Rate-Limit-Reset'])
             print("Exceed rate limit.")
