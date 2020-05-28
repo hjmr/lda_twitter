@@ -31,8 +31,8 @@ def get_friends_tweets(user_id=None, screen_name=None, num_friends=1000, num_twe
     for fid in friend_ids:
         user_tweets = {}
         user_info = get_userinfo(fid, None)
-        user_tweets['user_id'] = userinfo['id']
-        user_tweets['screen_name'] = userinfo['screen_name']
+        user_tweets['user_id'] = user_info['id']
+        user_tweets['screen_name'] = user_info['screen_name']
         user_timeline = get_timeline(fid, None, num_tweets)
         user_tweets['text'] = ' '.join([t['text'] for t in user_timeline])
         tweets.append(user_tweets)
@@ -45,10 +45,11 @@ if __name__ == '__main__':
     if args.base_filename is not None:
         for t in friends_tweets:
             user_id = t['user_id']
-            with open("{}_{}".format(args.base_filename, user_id)) as f:
+            with open("{}_{}".format(args.base_filename, user_id), "w") as f:
                 json.dump(t, f, indent=2, ensure_ascii=False)
     else:
         for t in friends_tweets:
             screen_name = t['screen_name']
             text = t['text']
-            print("{}: {}".format(screen_name, text[:10]))
+            print("------------------------------")
+            print("[{}] {}".format(screen_name, text[:30]))
