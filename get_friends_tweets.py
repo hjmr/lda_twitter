@@ -17,7 +17,7 @@ api = TwitterAPI(config.API_KEY, config.API_SECRET_KEY, config.ACCESS_TOKEN, con
 def parse_arg():
     args = argparse.ArgumentParser(description="get user's friends' timelines.")
     args.add_argument("-f", "--base_filename", type=str,
-                      help="specify base filename of output. the actual filename will be <base_filename>_screen_name.")
+                      help="specify base filename of output. the actual filename will be <base_filename>_user_id.")
     args.add_argument("-u", "--user_id", type=int, help="specify user by user_id.")
     args.add_argument("-s", "--screen_name", type=str, help="specify user by screen_name.")
     args.add_argument("-n", "--num_tweets", type=int, default=200, help="the number of tweets to be obtain.")
@@ -26,19 +26,29 @@ def parse_arg():
 
 
 def get_friends_tweets(user_id=None, screen_name=None, num_friends=1000, num_tweets=200):
-    tweets = {}
+    tweets = []
     friend_ids = get_friends(user_id, screen_name, num_friends)
     for fid in friend_ids:
-        screen_name = get_userinfo(fid, None)['screen_name']
-        user_tweets = get_timeline(fid, None, num_tweets)
-        user_tweet_texts = ' '.join([t['text'] for t in user_tweets])
-        tweets[screen_name] = user_tweet_texts
+        user_tweets = {}
+        user_info = get_userinfo(fid, None)
+        user_tweets['user_id'] = userinfo['id']
+        user_tweets['screen_name'] = userinfo['screen_name']
+        user_timeline = get_timeline(fid, None, num_tweets)
+        user_tweets['text'] = ' '.join([t['text'] for t in user_timeline])
+        tweets.append(user_tweets)
     return tweets
 
 
 if __name__ == '__main__':
     args = parse_arg()
     friends_tweets = get_friends_tweets(args.user_id, args.screen_name, args.count, args.num_tweets)
-    for screen_name in friends_tweets.keys():
-        t = friends_tweets[screen_name]
-        print("{}: {}".format(screen_name, t[:10]))
+    if args.base_filename is not None:
+        for t in friends_tweets:
+            user_id = t['user_id']
+            with open("{}_{}".format(args.base_filename, user_id)) as f:
+                json.dump(t, f, indent=2, ensure_ascii=False)
+    else:
+        for t in friends_tweets:
+            screen_name = t['screen_name']
+            text = t['text']
+            print("{}: {}".format(screen_name, text[:10]))
