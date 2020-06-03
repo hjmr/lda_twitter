@@ -37,7 +37,7 @@ if __name__ == '__main__':
     if args.base_filename is not None:
         for t in friends_tweets:
             user_id = t['user_id']
-            with open("{}_{}".format(args.base_filename, user_id), "w") as f:
+            with open("{}_{}.json".format(args.base_filename, user_id), "w") as f:
                 json.dump(t, f, indent=2, ensure_ascii=False)
     else:
         for t in friends_tweets:
