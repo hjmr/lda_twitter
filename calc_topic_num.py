@@ -16,9 +16,11 @@ def parse_arg():
     args.add_argument("--step", type=int, default=3, help="specify step.")
     args.add_argument("--limit", type=int, default=20, help="specify limit.")
     args.add_argument("-d", "--dictionary", type=str, nargs=1,
-                      help="speficy output filename which dictionary will be saved to.")
+                      help="specify output filename which dictionary will be saved to.")
     args.add_argument("-c", "--corpus", type=str, nargs=1,
-                      help="speficy output filename which corpus will be saved to.")
+                      help="specify output filename which corpus will be saved to.")
+    args.add_argument("-s", "--save_fig", type=str,
+                      help="specify file which the plot will be saved to.")
     args.add_argument("FILES", type=str, nargs='+', help="specify tweets files.")
     return args.parse_args()
 
@@ -35,6 +37,16 @@ def compute_coherence_values(dictionary, corpus, texts, limit, start=2, step=3):
     return model_list, coherence_values
 
 
+def plot_coherence_values(coherence_values, limit, start=2, step=3):
+    x = range(start, limit, step)
+    fig = plt.figure()
+    plt.plot(x, coherence_values)
+    plt.xlabel("Num Topics")
+    plt.ylabel("Coherence score")
+    plt.legend(("coherence_values"), loc='best')
+    return fig
+
+
 if __name__ == '__main__':
     args = parse_arg()
     texts = wakati_tweets(load_tweets(args.FILES))
@@ -43,9 +55,9 @@ if __name__ == '__main__':
     model_list, coherence_values = compute_coherence_values(
         dictionary, corpus, texts, args.limit, args.start, args.step)
 
-    x = range(args.start, args.limit, args.step)
-    plt.plot(x, coherence_values)
-    plt.xlabel("Num Topics")
-    plt.ylabel("Coherence score")
-    plt.legend(("coherence_values"), loc='best')
-    plt.show()
+    fig = plot_coherence_values(coherence_values, args.limit, args.start, args.step)
+    if args.save_fig is not None:
+        fig.savefig(args.save_fig)
+    else:
+        fig.show()
+        input("Press Enter")
