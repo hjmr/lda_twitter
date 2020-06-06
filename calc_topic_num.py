@@ -39,8 +39,8 @@ def compute_coherence_values(dictionary, corpus, texts, limit, start=2, step=3):
 if __name__ == '__main__':
     args = parse_arg()
     texts = wakati_tweets(load_tweets(args.FILES))
-    dictionary = Dictionary.load_from_text(args.dictionary)
-    corpus = MmCorpus(args.corpus)
+    dictionary = Dictionary.load_from_text(args.dictionary[0])
+    corpus = MmCorpus(args.corpus[0])
     model_list, coherence_values = compute_coherence_values(
         dictionary, corpus, texts, args.limit, args.start, args.step)
 

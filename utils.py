@@ -1,3 +1,6 @@
+import json
+
+
 def show_tweets(tweets):
     for t in tweets:
         print("------------------------------------")
