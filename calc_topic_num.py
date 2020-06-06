@@ -2,8 +2,7 @@ import json
 import argparse
 
 from gensim.corpora import Dictionary, MmCorpus
-from gensim.models import CoherenceModel
-from gensim.models.wrappers import LdaMallet
+from gensim.models import LdaModel, CoherenceModel
 
 import matplotlib.pyplot as plt
 
@@ -28,7 +27,7 @@ def compute_coherence_values(dictionary, corpus, texts, limit, start=2, step=3):
     coherence_values = []
     model_list = []
     for num_topics in range(start, limit, step):
-        model = LdaMallet(mallet_path, corpus=corpus, num_topics=num_topics, id2word=id2word)
+        model = LdaModel(corpus, num_topics=num_topics)
         model_list.append(model)
         coherencemodel = CoherenceModel(model=model, texts=texts, dictionary=dictionary, coherence='c_v')
         coherence_values.append(coherencemodel.get_coherence())
