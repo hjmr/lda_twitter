@@ -4,6 +4,7 @@ import argparse
 import MeCab
 
 import config
+import utils
 from normalize_text import normalize_text
 
 POS_USED = ['名詞', '動詞', '副詞', '形容詞', '形容動詞', '感動詞']
@@ -14,14 +15,6 @@ def parse_arg():
     args = argparse.ArgumentParser(description="make wakati texts from tweets.")
     args.add_argument("FILES", type=str, nargs='+', help="specify files.")
     return args.parse_args()
-
-
-def load_tweets(files):
-    tweets = []
-    for fn in files:
-        with open(fn, "r") as f:
-            tweets.append(json.load(f))
-    return tweets
 
 
 def check_stop_words(feature):
@@ -57,6 +50,6 @@ def wakati_tweets(tweets):
 
 if __name__ == "__main__":
     args = parse_arg()
-    tweets = load_tweets(args.FILES)
+    tweets = utils.load_tweets(args.FILES)
     texts = wakati_tweets(tweets)
     print(texts[0])
