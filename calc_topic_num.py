@@ -27,23 +27,32 @@ def parse_arg():
 
 def compute_coherence_values(dictionary, corpus, texts, limit, start=2, step=3):
     coherence_values = []
-    model_list = []
+    perplexities = []
     for num_topics in range(start, limit, step):
         model = LdaModel(corpus, num_topics=num_topics)
-        model_list.append(model)
+        perplexities.append(model.log_perplexity(corpus))
         coherencemodel = CoherenceModel(model=model, texts=texts, dictionary=dictionary, coherence='c_v')
         coherence_values.append(coherencemodel.get_coherence())
 
-    return model_list, coherence_values
+    return coherence_values, perplexities
 
 
-def plot_coherence_values(coherence_values, limit, start=2, step=3):
+def plot_coherence_values(coherence_values, perplexities, limit, start=2, step=3):
     x = range(start, limit, step)
     fig = plt.figure()
-    plt.plot(x, coherence_values)
-    plt.xlabel("Num Topics")
-    plt.ylabel("Coherence score")
-    plt.legend(("coherence_values"), loc='best')
+    ax1 = fig.add_subplot(111)
+    ax2 = ax1.twinx()
+
+    ax1.plot(x, coherence_values, "C0", label="Coherence score")
+    ax1.set_xlabel("Num Topics")
+    ax1.set_ylabel("Coherence score")
+
+    ax2.plot(x, perplexities, "C1", label="Perplexity")
+    ax2.set_ylabel("Perprexity")
+
+    h1, l1 = ax1.get_legend_handles_labels()
+    h2, l2 = ax2.get_legend_handles_labels()
+    ax1.legend(h1+h2, l1+l2, loc='best')
     return fig
 
 
@@ -52,10 +61,10 @@ if __name__ == '__main__':
     texts = wakati_tweets(load_tweets(args.FILES))
     dictionary = Dictionary.load_from_text(args.dictionary[0])
     corpus = MmCorpus(args.corpus[0])
-    model_list, coherence_values = compute_coherence_values(
+    coherence_values, perplexities = compute_coherence_values(
         dictionary, corpus, texts, args.limit, args.start, args.step)
 
-    fig = plot_coherence_values(coherence_values, args.limit, args.start, args.step)
+    fig = plot_coherence_values(coherence_values, perplexities, args.limit, args.start, args.step)
     if args.save_fig is not None:
         fig.savefig(args.save_fig)
     else:
