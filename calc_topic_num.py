@@ -21,17 +21,20 @@ def parse_arg():
                       help="specify output filename which corpus will be saved to.")
     args.add_argument("-s", "--save_fig", type=str,
                       help="specify file which the plot will be saved to.")
+    args.add_argument("-n", "--num_procs", type=int, default=-1,
+                      help="the number of processes which is passed to coherence calculation.")
     args.add_argument("FILES", type=str, nargs='+', help="specify tweets files.")
     return args.parse_args()
 
 
-def compute_coherence_values(dictionary, corpus, texts, limit, start=2, step=3):
+def compute_coherence_values(dictionary, corpus, texts, limit, start=2, step=3, num_procs=-1):
     coherence_values = []
     perplexities = []
     for num_topics in range(start, limit, step):
         model = LdaModel(corpus, num_topics=num_topics)
         perplexities.append(model.log_perplexity(corpus))
-        coherencemodel = CoherenceModel(model=model, texts=texts, dictionary=dictionary, coherence='c_v')
+        coherencemodel = CoherenceModel(model=model, texts=texts, dictionary=dictionary,
+                                        coherence='c_v', processes=num_procs)
         coherence_values.append(coherencemodel.get_coherence())
 
     return coherence_values, perplexities
@@ -62,7 +65,7 @@ if __name__ == '__main__':
     dictionary = Dictionary.load_from_text(args.dictionary[0])
     corpus = MmCorpus(args.corpus[0])
     coherence_values, perplexities = compute_coherence_values(
-        dictionary, corpus, texts, args.limit, args.start, args.step)
+        dictionary, corpus, texts, args.limit, args.start, args.step, args.num_procs)
 
     fig = plot_coherence_values(coherence_values, perplexities, args.limit, args.start, args.step)
     if args.save_fig is not None:
