@@ -6,7 +6,8 @@ from gensim.corpora import Dictionary, MmCorpus
 
 import config
 from normalize_text import normalize_text
-from wakati_tweets import wakati_tweets, load_tweets
+from utils import load_tweets
+from wakati_tweets import wakati_tweets
 
 POS_USED = ['名詞', '動詞', '副詞', '形容詞', '形容動詞', '感動詞']
 tagger = MeCab.Tagger("-d {}".format(config.MECAB_DIC))
