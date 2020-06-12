@@ -25,8 +25,13 @@ def plot_wordcloud(model, font, color):
         return color
 
     mask = np.array(Image.open("oval.png"))
-    ncols = int(math.sqrt(model.num_topics))+1
-    nrows = int(model.num_topics / ncols)+1
+    ncols = int(math.sqrt(model.num_topics))
+    if ncols * ncols < model.num_topics:
+        ncols += 1
+
+    nrows = int(model.num_topics / ncols)
+    if ncols * nrows < model.num_topics:
+        nrows += 1
 
     fig, axs = plt.subplots(ncols=ncols, nrows=nrows)
     axs = axs.flatten()
