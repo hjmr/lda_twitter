@@ -19,9 +19,9 @@ def parse_arg():
                       help="speficy output filename which dictionary will be saved to.")
     args.add_argument("-c", "--output_corpus", type=str,
                       help="speficy output filename which corpus will be saved to.")
-    args.add_argument("-u", "--upper_limit", type=float, default=0.5,
+    args.add_argument("-u", "--upper_limit", type=float,
                       help="exclude words from dictionary which are appeared over given ratio of documents.")
-    args.add_argument("-l", "--lower_limit", type=int, default=5,
+    args.add_argument("-l", "--lower_limit", type=int,
                       help="exclude words from dictionary which are appeared less than given number.")
     args.add_argument("FILES", type=str, nargs='+', help="specify files.")
     return args.parse_args()
@@ -30,7 +30,8 @@ def parse_arg():
 def make_dict_and_corpus(tweets, upper_limit, lower_limit):
     twitter_wakati_texts = wakati_tweets(tweets)
     dictionary = Dictionary(twitter_wakati_texts)
-    dictionary.filter_extremes(no_below=lower_limit, no_above=upper_limit)
+    if upper_limit is not None and lower_limit is not None:
+        dictionary.filter_extremes(no_below=lower_limit, no_above=upper_limit)
     corpus = [dictionary.doc2bow(t) for t in twitter_wakati_texts]
     return dictionary, corpus
 
