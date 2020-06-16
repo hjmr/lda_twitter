@@ -7,7 +7,6 @@ import config
 import utils
 from normalize_text import normalize_text
 
-POS_USED = ['名詞', '動詞', '副詞', '形容詞', '形容動詞', '感動詞']
 tagger = MeCab.Tagger("-d {}".format(config.MECAB_DIC))
 
 
@@ -17,13 +16,18 @@ def parse_arg():
     return args.parse_args()
 
 
-def check_stop_words(feature):
+def check_stop_words(word, feature):
     yn = False
-    if feature[1] == '数':
+    POS_USED = ["名詞", "形容詞"]
+    STOP_WORDS = []
+
+    if feature[0] not in POS_USED:
         yn = True
-    elif feature[1] == '固有名詞' and feature[2] == '一般':
+    elif feature[1] == '数':
         yn = True
-    return yn
+    elif word in STOP_WORDS:
+        yn = True
+     return yn
 
 
 def wakati_line(line):
@@ -32,8 +36,10 @@ def wakati_line(line):
     n = tagger.parseToNode(normalize_text(line))
     while n:
         f = n.feature.split(',')
-        if f[0] in POS_USED and check_stop_words(f) != True:
-            wakati.append(f[6]) if f[6] != '*' else wakati.append(n.surface)
+        if check_stop_words(n.surface, f) != True:
+            w = f[6] if f[6] != '*' else n.surface
+            if 1 < len(w):
+                wakati.append(w)
         n = n.next
     return wakati
 
