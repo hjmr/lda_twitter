@@ -17,10 +17,12 @@ def parse_arg():
                       help="specify font path.")
     args.add_argument("-c", "--color", type=str, default="darkblue",
                       help="specify color by name.")
+    args.add_argument("-r", "--reverse_frequency", action="store_true",
+                      help="to show words with smaller frequencies in larger fonts.")
     return args.parse_args()
 
 
-def plot_wordcloud(model, font, color):
+def plot_wordcloud(model, font, color, reverse_frequency=False):
     def color_func(word, font_size, position, orientation, random_state, font_path):
         return color
 
@@ -39,7 +41,10 @@ def plot_wordcloud(model, font, color):
         a.axis("off")
 
     for idx in range(model.num_topics):
-        x = dict(model.show_topic(idx, 30))
+        x = dict(model.show_topic(idx, 50))
+        if reverse_frequency:
+            for k in x.keys():
+                x[k] = 1.0 - x[k]
         wc = WordCloud(
             font_path=font,
             background_color="white",
@@ -58,6 +63,6 @@ def plot_wordcloud(model, font, color):
 if __name__ == "__main__":
     args = parse_arg()
     model = LdaModel.load(args.model[0])
-    fig = plot_wordcloud(model, args.font_path, args.color)
+    fig = plot_wordcloud(model, args.font_path, args.color, args.reverse_frequency)
     fig.show()
     input("Press Enter to finish.")
