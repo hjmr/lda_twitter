@@ -16,7 +16,7 @@ def parse_arg():
     args.add_argument("-u", "--upper_limit", type=float,
                       help="exclude words from dictionary which are appeared over given ratio of documents.")
     args.add_argument("-l", "--lower_limit", type=int,
-                      help="exclude words from dictionary which are appeared less than given number.")
+                      help="exclude words from dictionary which are appeared less than given number of documents.")
     args.add_argument("FILES", type=str, nargs='+', help="specify files.")
     return args.parse_args()
 
