@@ -46,10 +46,10 @@ def check_stop_words(word, feature):
     return yn
 
 
-def wakati_line(line):
+def wakati_text(text):
     wakati = []
     tagger.parse('')
-    n = tagger.parseToNode(normalize_text(line))
+    n = tagger.parseToNode(normalize_text(text))
     while n:
         f = n.feature.split(',')
         if check_stop_words(n.surface, f) != True:
@@ -61,7 +61,7 @@ def wakati_line(line):
 
 
 def wakati_texts(texts):
-    wakati_texts = [wakati_line(t) for t in texts]
+    wakati_texts = [wakati_text(t) for t in texts]
     return wakati_texts
 
 
