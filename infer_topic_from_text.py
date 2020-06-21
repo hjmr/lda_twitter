@@ -1,4 +1,5 @@
 import argparse
+from pprint import pprint
 
 from utils import wakati_text
 from gensim.corpora import Dictionary
@@ -13,15 +14,30 @@ def parse_arg():
     return args.parse_args()
 
 
-if __name__ == "__main__":
-    args = parse_arg()
-    model = LdaModel.load(args.model[0])
-    dictionary = Dictionary.load_from_text(args.dictionary[0])
-    doc = wakati_text(args.TEXT)
+def doc2vec(dictionary, text):
+    doc = wakati_text(text)
     doc_vec = dictionary.doc2bow(doc)
+    return doc_vec
+
+
+def infer_topics(model, doc_vec):
     topics = model[doc_vec]
+    return topics
+
+
+def max_topic(model, topics):
     topic_num_arr = [i for i, v in topics]
     topic_score_arr = [v for i, v in topics]
     topic_num = topic_num_arr[topic_score_arr.index(max(topic_score_arr))]
     topic_vec = model.show_topic(topic_num, 20)
-    print(topic_vec)
+    return topic_num, topic_vec
+
+
+if __name__ == "__main__":
+    args = parse_arg()
+    model = LdaModel.load(args.model[0])
+    dictionary = Dictionary.load_from_text(args.dictionary[0])
+    doc_vec = doc2vec(dictionary, args.TEXT)
+    topics = infer_topics(model, doc_vec)
+    topic_num, topic_vec = max_topic(model, topics)
+    pprint((topic_num, topic_vec))
