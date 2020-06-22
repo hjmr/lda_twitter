@@ -13,7 +13,7 @@ def unicode_normalize(cls, s):
 
 
 def remove_extra_spaces(s):
-    s = re.sub('[ 　]+', ' ', s)
+    s = re.sub('[ 　\n\t]+', ' ', s)
     blocks = ''.join(('\u4E00-\u9FFF',  # CJK UNIFIED IDEOGRAPHS
                       '\u3040-\u309F',  # HIRAGANA
                       '\u30A0-\u30FF',  # KATAKANA
