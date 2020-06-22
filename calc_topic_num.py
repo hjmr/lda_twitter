@@ -7,7 +7,7 @@ from gensim.models import LdaModel, CoherenceModel
 import numpy as np
 import matplotlib.pyplot as plt
 
-from utils import load_tweets, wakati_tweets
+from tweet_utils import load_tweets, wakati_tweets
 
 
 def parse_arg():

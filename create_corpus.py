@@ -3,7 +3,7 @@ import argparse
 
 from gensim.corpora import Dictionary, MmCorpus
 
-from utils import load_tweets, wakati_tweets
+from tweet_utils import load_tweets, wakati_tweets
 
 
 def parse_arg():

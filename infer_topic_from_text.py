@@ -1,7 +1,7 @@
 import argparse
 from pprint import pprint
 
-from utils import wakati_text
+from tweet_utils import wakati_text
 from gensim.corpora import Dictionary
 from gensim.models import LdaModel
 
