@@ -32,17 +32,29 @@ def load_tweets(files):
     return tweets
 
 
-def check_stop_words(word, feature):
+def check_if_not_use(word, feature):
     yn = False
-    POS_USED = ["名詞", "形容詞"]
+    POS_NOT_USED = [("名詞", "数")]
     STOP_WORDS = []
+    if word in STOP_WORDS:
+        yn = True
+    else:
+        for p in POS_NOT_USED:
+            if len(p) == 1:
+                yn = (p[0] == feature[0])
+            else:
+                yn = (p[0] == feature[0] and p[1] == feature[1])
+    return yn
 
-    if feature[0] not in POS_USED:
-        yn = True
-    elif feature[1] == '数':
-        yn = True
-    elif word in STOP_WORDS:
-        yn = True
+
+def check_if_use(word, feature):
+    yn = False
+    POS_USED = [("名詞"), ("形容詞", "自立"), ("動詞", "自立")]
+    for p in POS_USED:
+        if len(p) == 1:
+            yn = (p[0] == feature[0])
+        else:
+            yn = (p[0] == feature[0] and p[1] == feature[1])
     return yn
 
 
@@ -52,7 +64,7 @@ def wakati_text(text):
     n = tagger.parseToNode(normalize_text(text))
     while n:
         f = n.feature.split(',')
-        if check_stop_words(n.surface, f) != True:
+        if check_if_use(n.surface, f) == True and check_if_not_use(n.surface, f) != True:
             w = f[6] if f[6] != '*' else n.surface
             if 1 < len(w):
                 wakati.append(w)
