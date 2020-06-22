@@ -50,7 +50,7 @@ def check_if_not_use(word, feature):
 
 def check_if_use(word, feature):
     yn = False
-    POS_USED = [("名詞"), ("形容詞", "自立"), ("動詞", "自立")]
+    POS_USED = [("名詞"), ("形容詞", "自立")]
     for p in POS_USED:
         if len(p) == 1:
             yn = (p[0] == feature[0])
@@ -84,7 +84,7 @@ def wakati_text(text):
 
 
 def wakati_texts(texts):
-    wakati_texts = [wakati_text(t) for t in texts]
+    wakati_texts = [wakati_text(remove_screen_names(remove_urls(t))) for t in texts]
     return wakati_texts
 
 
