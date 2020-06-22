@@ -50,12 +50,12 @@ def check_if_not_use(word, feature):
 
 def check_if_use(word, feature):
     yn = False
-    POS_USED = [("名詞"), ("形容詞", "自立")]
+    POS_USED = [("名詞"), ("形容詞", "自立"), ("動詞", "自立")]
     for p in POS_USED:
         if len(p) == 1:
-            yn = (p[0] == feature[0])
+            yn = yn or (p[0] == feature[0])
         else:
-            yn = (p[0] == feature[0] and p[1] == feature[1])
+            yn = yn or (p[0] == feature[0] and p[1] == feature[1])
     return yn
 
 
