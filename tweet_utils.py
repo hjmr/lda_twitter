@@ -1,3 +1,4 @@
+import re
 import json
 import argparse
 
@@ -56,6 +57,16 @@ def check_if_use(word, feature):
         else:
             yn = (p[0] == feature[0] and p[1] == feature[1])
     return yn
+
+
+def remove_urls(text):
+    text = re.sub("https?://[\w!\?/\+\-_~=;\.,\*&@#\$%\(\)'\[\]]+", "", text)
+    return text
+
+
+def remove_screen_names(text):
+    text = re.sub("@[A-Za-z0-9_]+", "", text)
+    return text
 
 
 def wakati_text(text):
