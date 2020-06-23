@@ -20,6 +20,8 @@ def parse_arg():
                       help="speficy file which the HTML will be saved to.")
     args.add_argument("-t", "--use_tfidf", action="store_true",
                       help="use TF-IDF corpus.")
+    args.add_argument("--method", type=str, default="pcoa",
+                      help="specify a method for MDS by one from 'pcoa', 'mmds', or 'tsne'.")
     return args.parse_args()
 
 
@@ -31,7 +33,7 @@ if __name__ == "__main__":
         tfidf = TfidfModel(corpus)
         corpus = tfidf[corpus]
     dictionary = Dictionary.load_from_text(args.dictionary[0])
-    vis = pyLDAvis.gensim.prepare(model, corpus, dictionary)
+    vis = pyLDAvis.gensim.prepare(model, corpus, dictionary, mds=args.method)
     if args.save_to_file is not None:
         pyLDAvis.save(vis, args.save_to_file)
     else:
