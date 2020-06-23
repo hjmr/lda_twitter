@@ -2,7 +2,7 @@ import json
 import argparse
 
 from gensim.corpora import Dictionary, MmCorpus
-from gensim.models import LdaModel, CoherenceModel
+from gensim.models import LdaModel, CoherenceModel, TfidfModel
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -25,6 +25,8 @@ def parse_arg():
                       help="specify coherence measure to be used.")
     args.add_argument("-r", "--repeat", type=int, default=1,
                       help="the number of times to repeat calculation for more accurate values.")
+    args.add_argument("-t", "--use_tfidf", action="store_true",
+                      help="use TF-IDF corpus.")
     args.add_argument("FILES", type=str, nargs='+', help="specify tweets files.")
     return args.parse_args()
 
@@ -65,6 +67,9 @@ if __name__ == '__main__':
     texts = wakati_tweets(load_tweets(args.FILES))
     dictionary = Dictionary.load_from_text(args.dictionary[0])
     corpus = MmCorpus(args.corpus[0])
+    if args.use_tfidf:
+        tfidf = TfidfModel(corpus)
+        corpus = tfidf[corpus]
     coherence_values = None
     perplexities = None
     for _ in range(args.repeat):

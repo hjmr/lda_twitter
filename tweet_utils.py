@@ -35,22 +35,22 @@ def load_tweets(files):
 
 def check_if_not_use(word, feature):
     yn = False
-    POS_NOT_USED = [("名詞", "数")]
+    POS_NOT_USED = [["名詞", "数"]]
     STOP_WORDS = []
     if word in STOP_WORDS:
         yn = True
     else:
         for p in POS_NOT_USED:
             if len(p) == 1:
-                yn = (p[0] == feature[0])
+                yn = yn or (p[0] == feature[0])
             else:
-                yn = (p[0] == feature[0] and p[1] == feature[1])
+                yn = yn or (p[0] == feature[0] and p[1] == feature[1])
     return yn
 
 
 def check_if_use(word, feature):
     yn = False
-    POS_USED = [("名詞"), ("形容詞", "自立"), ("動詞", "自立")]
+    POS_USED = [["名詞"], ["形容詞", "自立"], ["動詞", "自立"]]
     for p in POS_USED:
         if len(p) == 1:
             yn = yn or (p[0] == feature[0])
@@ -72,7 +72,7 @@ def remove_screen_names(text):
 def wakati_text(text):
     wakati = []
     tagger.parse('')
-    n = tagger.parseToNode(normalize_text(text))
+    n = tagger.parseToNode(remove_screen_names(remove_urls(normalize_text(text))))
     while n:
         f = n.feature.split(',')
         if check_if_use(n.surface, f) == True and check_if_not_use(n.surface, f) != True:
@@ -84,7 +84,7 @@ def wakati_text(text):
 
 
 def wakati_texts(texts):
-    wakati_texts = [wakati_text(remove_screen_names(remove_urls(t))) for t in texts]
+    wakati_texts = [wakati_text(t) for t in texts]
     return wakati_texts
 
 
