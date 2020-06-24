@@ -1,5 +1,4 @@
 import argparse
-from pprint import pprint
 
 from gensim.corpora import Dictionary, MmCorpus
 from gensim.models import LdaModel, TfidfModel
@@ -35,6 +34,6 @@ if __name__ == "__main__":
     dictionary = Dictionary.load_from_text(args.dictionary[0])
     vis = pyLDAvis.gensim.prepare(model, corpus, dictionary, mds=args.method)
     if args.save_to_file is not None:
-        pyLDAvis.save(vis, args.save_to_file)
+        pyLDAvis.save_html(vis, args.save_to_file)
     else:
         pyLDAvis.show(vis)
