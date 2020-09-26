@@ -16,9 +16,9 @@ def parse_arg():
     args.add_argument("--step", type=int, default=3, help="specify step.")
     args.add_argument("--limit", type=int, default=20, help="specify limit.")
     args.add_argument("-d", "--dictionary", type=str, nargs=1,
-                      help="specify output filename which dictionary will be saved to.")
+                      help="specify dictionary file.")
     args.add_argument("-c", "--corpus", type=str, nargs=1,
-                      help="specify output filename which corpus will be saved to.")
+                      help="specify corpus file.")
     args.add_argument("-s", "--save_fig", type=str,
                       help="specify file which the plot will be saved to.")
     args.add_argument("-m", "--coherence_measure", type=str, default="c_v",
