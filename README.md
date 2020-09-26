@@ -15,9 +15,9 @@ TwitterAPIを使うのでデベロッパー登録して，環境変数にトー�
 
 #### 利用法
 
-``
+``` shell
 python get_followrs.py -u 10010
-``
+```
 
 #### オプション
 
@@ -31,9 +31,9 @@ python get_followrs.py -u 10010
 
 #### 利用法
 
-``
+``` shell
 python get_followrs.py -u 10010 -f output.json -c 100
-``
+```
 
 #### オプション
 
@@ -50,9 +50,9 @@ python get_followrs.py -u 10010 -f output.json -c 100
 
 #### 利用法
 
-``
+``` shell
 python get_friends.py -u 10010 -f output.json -c 100
-``
+```
 
 #### オプション
 
@@ -68,9 +68,9 @@ python get_friends.py -u 10010 -f output.json -c 100
 
 #### 利用法
 
-``
+``` shell
 python get_timeline.py -s hoge -f tweets20200801 -n 100
-``
+```
 
 #### オプション
 
@@ -86,9 +86,9 @@ python get_timeline.py -s hoge -f tweets20200801 -n 100
 
 #### 利用法
 
-``
+``` shell
 python get_friends_tweets.py -s hoge -f tweets20200801 -c 50 -n 100
-``
+```
 
 #### オプション
 
@@ -108,9 +108,9 @@ python get_friends_tweets.py -s hoge -f tweets20200801 -c 50 -n 100
 
 #### 利用法
 
-``
+``` shell
 python create_corpus.py -d dic/hoge.dict -c dic/hoge.mm -u 0.8 -l 3 a.json b.json c.json
-``
+```
 
 #### オプション
 
@@ -128,7 +128,7 @@ python create_corpus.py -d dic/hoge.dict -c dic/hoge.mm -u 0.8 -l 3 a.json b.jso
 
 #### 利用法
 
-``
+``` shell
 python calc_topic_num.py \
     -d dic/hoge.dict -c dic/hoge.mm \
     --start 2 --limit 10 --step 3 \
@@ -136,7 +136,7 @@ python calc_topic_num.py \
     -m "c_v" \
     -r 10
     a.json b.json c.json
-``
+```
 
 この例では，トピック数を2から10に3刻みで変化（2,5,8）させながら，
 それぞれのトピック数では10回計算を繰り返し，その平均をPDF形式で出力する。
