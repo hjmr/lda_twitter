@@ -4,7 +4,6 @@ import time
 
 from TwitterAPI import TwitterAPI
 import config
-import utils
 
 
 API = 'followers/ids'

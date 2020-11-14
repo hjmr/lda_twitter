@@ -4,7 +4,7 @@ import time
 
 from TwitterAPI import TwitterAPI
 import config
-import utils
+import tweet_utils
 
 
 API = 'statuses/user_timeline'
@@ -72,4 +72,4 @@ if __name__ == '__main__':
         with open(args.filename, "w+") as f:
             json.dump(tweets, f, indent=2, ensure_ascii=False)
     else:
-        utils.show_tweets(tweets)
+        tweet_utils.show_tweets(tweets)
