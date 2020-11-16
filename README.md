@@ -21,11 +21,12 @@ TwitterAPIを使うのでデベロッパー登録して，環境変数にトー�
 
 指定されたユーザのユーザ情報を取得し，画面に表示する。
 ユーザはユーザIDまたはスクリーン名で指定する。
+ユーザIDとスクリーン名の両方が指定された場合はユーザIDが優先される。
 
 #### 利用法
 
 ``` shell
-python get_followrs.py -u 10010
+python get_followers.py -u 10010
 ```
 
 #### オプション
@@ -37,6 +38,7 @@ python get_followrs.py -u 10010
 
 指定されたユーザをフォローしているユーザのIDを収集する。
 ユーザはユーザIDまたはスクリーン名で指定する。
+ユーザIDとスクリーン名の両方が指定された場合はユーザIDが優先される。
 
 #### 利用法
 
@@ -56,6 +58,7 @@ python get_followrs.py -u 10010 -f output.json -c 100
 
 指定されたユーザがフォローしているユーザ（友人）のIDを収集する。
 ユーザはユーザIDまたはスクリーン名で指定する。
+ユーザIDとスクリーン名の両方が指定された場合はユーザIDが優先される。
 
 #### 利用法
 
@@ -74,6 +77,8 @@ python get_friends.py -u 10010 -f output.json -c 100
 ### get_timeline.py
 
 指定されたユーザのツイートを収集する。
+ユーザはユーザIDまたはスクリーン名で指定する。
+ユーザIDとスクリーン名の両方が指定された場合はユーザIDが優先される。
 
 #### 利用法
 
@@ -92,6 +97,8 @@ python get_timeline.py -s hoge -f tweets20200801 -n 100
 ### get_friends_tweets.py
 
 指定されたユーザがフォローしているユーザ（友人）のツイートを収集する。
+ユーザはユーザIDまたはスクリーン名で指定する。
+ユーザIDとスクリーン名の両方が指定された場合はユーザIDが優先される。
 
 #### 利用法
 
@@ -147,7 +154,7 @@ python calc_topic_num.py \
     a.json b.json c.json
 ```
 
-この例では，トピック数を2から10に3刻みで変化（2,5,8）させながら，
+この例では，トピック数を2から10まで3刻みで変化（2,5,8）させながら，
 それぞれのトピック数では10回計算を繰り返し，その平均をPDF形式で出力する。
 
 #### オプション
@@ -172,9 +179,47 @@ python calc_topic_num.py \
 
 ### create_model.py
 
+LDAモデルを作成する。
+
+#### 利用法
+
+``` shell
+python create_model.py -d dic/hoge.dict -c dic/hoge.mm -n 5 -o models/hoge.model -t
+```
+
+#### オプション
+
+- **-c / --corpus** : コーパスファイル名（mmで終わるもの）を指定する。
+- **-d / --dictionary** : 辞書ファイル名を指定する。
+- **-n / --num_topics** : トピック数。
+- **-o / --output_file** : 保存するモデルのファイル名。必ず指定する。
+- **-t / --use_tfidf** : TF-IDFコーパスを利用する。
+
 ### check_model.py
 
+LDAモデルのトピックを表示する。
+
+
+#### 利用法
+
+``` shell
+python check_model.py models/hoge.model
+```
+
 ### infer_topic_from_text.py
+
+テキストを入力するとそれがどのトピックに属するかを推定して表示してくれる。
+
+#### 利用法
+
+``` shell
+python infer_topic_from_text.py -m models/hoge.model -d dic/hoge.dict "今日は天気がいい"
+```
+
+#### オプション
+
+- **-m / --model** : `create_model.py`で作成したLDAモデルのファイル名を指定。
+- **-d / --dictionary** : 辞書ファイル名を指定する。
 
 ### visualize_by_html.py
 
