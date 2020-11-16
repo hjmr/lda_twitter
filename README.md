@@ -6,6 +6,15 @@ TwitterのフォロワーのツイートをLDAを用いてトピック分類し�
 
 TwitterAPIを使うのでデベロッパー登録して，環境変数にトークンなどを設定しておく。
 
+### 環境変数
+
+- TWITTER_DEV_ENV : Twitter Dev で登録した開発用 Environment 名
+- API_KEY : Twitter Dev で取得した API_KEY
+- API_SECRET_TOKEN : Twitter Dev で取得した API_SECRET_TOKEN
+- ACCESS_TOKEN : Twitter Dev で取得した ACCESS_TOKEN
+- ACCESS_TOKEN_SECRET : Twitter Dev で取得した ACCESS_TOKEN_SECRET
+- MECAB_DIC : MeCab辞書のディレクトリ
+
 ## Twitter関連
 
 ### get_userinfo.py
