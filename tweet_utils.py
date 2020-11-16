@@ -7,7 +7,10 @@ import MeCab
 import config
 from normalize_text import normalize_text
 
-tagger = MeCab.Tagger("-d {}".format(config.MECAB_DIC))
+if config.MECAB_DIC is not None:
+    tagger = MeCab.Tagger("-d {}".format(config.MECAB_DIC))
+else:
+    tagger = MeCab.Tagger()
 
 
 def parse_arg():
@@ -95,6 +98,6 @@ def wakati_tweets(tweets):
 
 if __name__ == "__main__":
     args = parse_arg()
-    tweets = utils.load_tweets(args.FILES)
+    tweets = load_tweets(args.FILES)
     texts = wakati_tweets(tweets)
     print(texts[0])
