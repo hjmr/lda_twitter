@@ -6,12 +6,15 @@ authors = ["hjmr <2620990+hjmr@users.noreply.github.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.8"
+numpy = {path = "../../packages/numpy-1.20.0rc1-cp39-cp39-macosx_11_0_arm64.whl"}
+pandas = {path = "../../packages/pandas-1.2.0rc0+0.g7688d3cfe.dirty-cp39-cp39-macosx_11_0_arm64.whl"}
+scipy = {path = "../../packages/scipy-1.6.0rc1-cp39-cp39-macosx_11_0_arm64.whl"}
 twitterapi = "^2.5.11"
 gensim = "^3.8.3"
-matplotlib = "^3.2.1"
-pyLDAvis = "^2.1.2"
-wordcloud = "^1.7.0"
+matplotlib = "^3.3.3"
+wordcloud = "^1.8.1"
 mecab = "^0.996.2"
+pyLDAvis = "^2.1.2"
 
 [tool.poetry.dev-dependencies]
 pylint = "^2.5.2"
