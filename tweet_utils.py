@@ -75,7 +75,7 @@ def remove_screen_names(text):
 def wakati_text(text):
     wakati = []
     tagger.parse('')
-    n = tagger.parseToNode(remove_screen_names(remove_urls(normalize_text(text))))
+    n = tagger.parseToNode(remove_screen_names(normalize_text(text)))
     while n:
         f = n.feature.split(',')
         if check_if_use(n.surface, f) == True and check_if_not_use(n.surface, f) != True:
