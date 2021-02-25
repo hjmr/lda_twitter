@@ -11,7 +11,6 @@ twitterapi = "^2.5.11"
 matplotlib = "^3.3.3"
 wordcloud = "^1.8.1"
 mecab = "^0.996.2"
-scipy = {path = "../../packages/scipy-1.6.0-cp39-cp39-macosx_11_0_arm64.whl"}
 pyLDAvis = "^2.1.2"
 gensim = "^3.8.3"
 
