@@ -5,7 +5,7 @@ import argparse
 import MeCab
 
 import config
-from normalize_text import normalize_text
+import normalize_text as nt
 
 if config.MECAB_DIC is not None:
     tagger = MeCab.Tagger("-d {}".format(config.MECAB_DIC))
@@ -15,17 +15,17 @@ else:
 
 def parse_arg():
     args = argparse.ArgumentParser(description="make wakati texts from tweets.")
-    args.add_argument("FILES", type=str, nargs='+', help="specify files.")
+    args.add_argument("FILES", type=str, nargs="+", help="specify files.")
     return args.parse_args()
 
 
 def show_tweets(tweets):
     for t in tweets:
         print("------------------------------------")
-        print("tweet id: {}".format(t['id']))
-        print("screen_name: {}".format(t['user']['screen_name']))
-        print("user id: {}".format(t['user']['id']))
-        print(t['text'])
+        print("tweet id: {}".format(t["id"]))
+        print("screen_name: {}".format(t["user"]["screen_name"]))
+        print("user id: {}".format(t["user"]["id"]))
+        print(t["text"])
 
 
 def load_tweets(files):
@@ -72,14 +72,18 @@ def remove_screen_names(text):
     return text
 
 
+def normalize_text(text):
+    return remove_screen_names(nt.normalize_text(text))
+
+
 def wakati_text(text):
     wakati = []
-    tagger.parse('')
-    n = tagger.parseToNode(remove_screen_names(normalize_text(text)))
+    tagger.parse("")
+    n = tagger.parseToNode(normalize_text(text))
     while n:
-        f = n.feature.split(',')
+        f = n.feature.split(",")
         if check_if_use(n.surface, f) == True and check_if_not_use(n.surface, f) != True:
-            w = f[6] if f[6] != '*' else n.surface
+            w = f[6] if f[6] != "*" else n.surface
             if 1 < len(w):
                 wakati.append(w)
         n = n.next
@@ -92,7 +96,7 @@ def wakati_texts(texts):
 
 
 def wakati_tweets(tweets):
-    twitter_wakati_texts = wakati_texts([t['text'] for t in tweets])
+    twitter_wakati_texts = wakati_texts([t["text"] for t in tweets])
     return twitter_wakati_texts
 
 
