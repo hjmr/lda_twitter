@@ -2,16 +2,11 @@ import re
 import json
 import argparse
 
-import MeCab
+import spacy
 
-import config
 import normalize_text as nt
 
-if config.MECAB_DIC is not None:
-    tagger = MeCab.Tagger("-d {}".format(config.MECAB_DIC))
-else:
-    tagger = MeCab.Tagger()
-
+tokenizer = spacy.load("ja_ginza")
 
 def parse_arg():
     args = argparse.ArgumentParser(description="make wakati texts from tweets.")
@@ -38,7 +33,7 @@ def load_tweets(files):
 
 def check_if_not_use(word, feature):
     yn = False
-    POS_NOT_USED = [["名詞", "数"]]
+    POS_NOT_USED = [["名詞", "数詞"]]
     STOP_WORDS = []
     if word in STOP_WORDS:
         yn = True
@@ -53,7 +48,7 @@ def check_if_not_use(word, feature):
 
 def check_if_use(word, feature):
     yn = False
-    POS_USED = [["名詞"], ["形容詞", "自立"], ["動詞", "自立"]]
+    POS_USED = [["名詞"], ["形容詞"], ["動詞"]]
     for p in POS_USED:
         if len(p) == 1:
             yn = yn or (p[0] == feature[0])
@@ -78,15 +73,14 @@ def normalize_text(text):
 
 def wakati_text(text):
     wakati = []
-    tagger.parse("")
-    n = tagger.parseToNode(normalize_text(text))
-    while n:
-        f = n.feature.split(",")
-        if check_if_use(n.surface, f) == True and check_if_not_use(n.surface, f) != True:
-            w = f[6] if f[6] != "*" else n.surface
-            if 1 < len(w):
-                wakati.append(w)
-        n = n.next
+    doc = tokenizer(normalize_text(text))
+    for sent in doc.sents:
+        for token in sent:
+            f = token.tag_.split("-")
+            if check_if_use(token.lemma_, f) == True and check_if_not_use(token.lemma_, f) != True:
+                w = token.lemma_
+                if 1 < len(w):
+                    wakati.append(w)
     return wakati
 
 
@@ -100,8 +94,11 @@ def wakati_tweets(tweets):
     return twitter_wakati_texts
 
 
-if __name__ == "__main__":
+def test_for_tweets():
     args = parse_arg()
     tweets = load_tweets(args.FILES)
     texts = wakati_tweets(tweets)
     print(texts[0])
+
+if __name__ == "__main__":
+    print(wakati_text("今日はとても天気が良い。"))
