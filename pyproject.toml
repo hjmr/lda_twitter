@@ -3,23 +3,18 @@ name = "twitter-topic"
 version = "0.1.0"
 description = ""
 authors = ["hjmr <2620990+hjmr@users.noreply.github.com>"]
+readme = "README.md"
 
 [tool.poetry.dependencies]
-python = ">=3.8,<3.10"
-pandas = "^1.4.0"
-TwitterAPI = "^2.7.11"
-matplotlib = "^3.5.1"
-wordcloud = "^1.8.1"
+python = "^3.11"
+twitterapi = "^2.8.2"
+wordcloud = "^1.9.2"
 mecab = "^0.996.3"
-scipy = "^1.7.3"
-numpy = "^1.22.1"
-gensim = "^4.1.2"
-pyLDAvis = "^3.3.1"
+numpy = "^1.24.3"
+gensim = "^4.3.1"
+pyldavis = "^3.4.1"
 
-[tool.poetry.dev-dependencies]
-pylint = "^2.12.2"
-black = "^21.12-beta.0"
 
 [build-system]
-requires = ["poetry>=0.12"]
-build-backend = "poetry.masonry.api"
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
